@@ -72,7 +72,7 @@ export const PMCanvas = () => {
       <div className="bg-vexnet-background/80 backdrop-blur-sm border-b border-border/20 p-4 print:bg-vexnet-background">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <VexnetLogo />
-          <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+          <div className="flex flex-col lg:flex-row lg:items-end gap-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 text-sm">
               <div>
                 <Label htmlFor="gp" className="text-muted-foreground">GP:</Label>
