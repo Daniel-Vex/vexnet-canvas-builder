@@ -17,7 +17,7 @@ All colors MUST be HSL.
     --popover: 214 100% 20%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 206 100% 50%;
+    --primary: 207 100% 33%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 214 100% 25%;
@@ -26,7 +26,7 @@ All colors MUST be HSL.
     --muted: 214 100% 15%;
     --muted-foreground: 215.4 16.3% 65%;
 
-    --accent: 179 100% 50%;
+    --accent: 178 91% 38%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 84.2% 60.2%;
@@ -37,9 +37,9 @@ All colors MUST be HSL.
     --ring: 206 100% 50%;
 
     /* Custom Vexnet colors */
-    --vexnet-primary: 206 100% 50%;
-    --vexnet-secondary: 214 100% 25%;
-    --vexnet-accent: 179 100% 50%;
+    --vexnet-primary: 207 100% 33%;      /* #005BAA */
+    --vexnet-secondary: 217 100% 72%;    /* #70A6FF */
+    --vexnet-accent: 178 91% 38%;        /* #09BBB5 */
     --vexnet-background: 210 100% 8%;
     --vexnet-surface: 214 100% 20%;
     
