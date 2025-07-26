@@ -6,7 +6,7 @@ export const VexnetLogo = ({ className }: { className?: string }) => {
       <img 
         src={logoVexnet} 
         alt="Vexnet Logo" 
-        className="h-8 w-auto"
+        className="h-12 w-auto"
       />
     </div>
   );
