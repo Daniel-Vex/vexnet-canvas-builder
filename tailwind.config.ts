@@ -61,7 +61,18 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				vexnet: {
+					primary: 'hsl(var(--vexnet-primary))',
+					secondary: 'hsl(var(--vexnet-secondary))',
+					accent: 'hsl(var(--vexnet-accent))',
+					background: 'hsl(var(--vexnet-background))',
+					surface: 'hsl(var(--vexnet-surface))'
 				}
+			},
+			backgroundImage: {
+				'gradient-vexnet': 'var(--gradient-bg)',
+				'gradient-card': 'var(--gradient-card)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
