@@ -108,15 +108,15 @@ export const PMCanvas = () => {
 
       {/* Canvas Grid */}
       <div className="max-w-7xl mx-auto p-6">
-        <div className="grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 gap-4 auto-rows-fr">
-          {/* Row 1 */}
+        <div className="grid grid-cols-5 gap-4 auto-rows-fr">
+          {/* Row 1 - 5 quadros */}
           <PMCanvasCard
             title="Justificativa"
             number={1}
             icon={<FileText className="w-4 h-4" />}
             value={data.justificativa}
             onChange={(value) => updateField("justificativa", value)}
-            className="lg:col-span-1"
+            className="col-span-1"
             rows={6}
           />
           
@@ -126,7 +126,7 @@ export const PMCanvas = () => {
             icon={<Target className="w-4 h-4" />}
             value={data.objSmart}
             onChange={(value) => updateField("objSmart", value)}
-            className="lg:col-span-1"
+            className="col-span-1"
             rows={6}
           />
           
@@ -136,7 +136,7 @@ export const PMCanvas = () => {
             icon={<TrendingUp className="w-4 h-4" />}
             value={data.beneficios}
             onChange={(value) => updateField("beneficios", value)}
-            className="lg:col-span-1"
+            className="col-span-1"
             rows={6}
           />
           
@@ -146,7 +146,7 @@ export const PMCanvas = () => {
             icon={<Package className="w-4 h-4" />}
             value={data.produto}
             onChange={(value) => updateField("produto", value)}
-            className="lg:col-span-1"
+            className="col-span-1"
             rows={6}
           />
           
@@ -156,18 +156,18 @@ export const PMCanvas = () => {
             icon={<ClipboardList className="w-4 h-4" />}
             value={data.requisitos}
             onChange={(value) => updateField("requisitos", value)}
-            className="lg:col-span-1"
+            className="col-span-1"
             rows={6}
           />
 
-          {/* Row 2 */}
+          {/* Row 2 - 5 quadros */}
           <PMCanvasCard
             title="Stakeholders"
             number={6}
             icon={<Users className="w-4 h-4" />}
             value={data.stakeholders}
             onChange={(value) => updateField("stakeholders", value)}
-            className="lg:col-span-1"
+            className="col-span-1"
             rows={4}
           />
           
@@ -177,7 +177,7 @@ export const PMCanvas = () => {
             icon={<UserCheck className="w-4 h-4" />}
             value={data.equipe}
             onChange={(value) => updateField("equipe", value)}
-            className="lg:col-span-1"
+            className="col-span-1"
             rows={4}
           />
           
@@ -187,7 +187,7 @@ export const PMCanvas = () => {
             icon={<Cloud className="w-4 h-4" />}
             value={data.premissas}
             onChange={(value) => updateField("premissas", value)}
-            className="lg:col-span-1"
+            className="col-span-1"
             rows={4}
           />
           
@@ -197,7 +197,7 @@ export const PMCanvas = () => {
             icon={<Calendar className="w-4 h-4" />}
             value={data.fases}
             onChange={(value) => updateField("fases", value)}
-            className="lg:col-span-1"
+            className="col-span-1"
             rows={4}
           />
           
@@ -207,18 +207,18 @@ export const PMCanvas = () => {
             icon={<Clock className="w-4 h-4" />}
             value={data.linhaTempo}
             onChange={(value) => updateField("linhaTempo", value)}
-            className="lg:col-span-1"
+            className="col-span-1"
             rows={4}
           />
 
-          {/* Row 3 */}
+          {/* Row 3 - 3 quadros com larguras diferentes */}
           <PMCanvasCard
             title="Restrições"
             number={10}
             icon={<AlertTriangle className="w-4 h-4" />}
             value={data.restricoes}
             onChange={(value) => updateField("restricoes", value)}
-            className="lg:col-span-2"
+            className="col-span-2"
             rows={4}
           />
           
@@ -228,7 +228,7 @@ export const PMCanvas = () => {
             icon={<Shield className="w-4 h-4" />}
             value={data.riscos}
             onChange={(value) => updateField("riscos", value)}
-            className="lg:col-span-2"
+            className="col-span-2"
             rows={4}
           />
           
@@ -238,7 +238,7 @@ export const PMCanvas = () => {
             icon={<DollarSign className="w-4 h-4" />}
             value={data.custos}
             onChange={(value) => updateField("custos", value)}
-            className="lg:col-span-1"
+            className="col-span-1"
             rows={4}
           />
         </div>
