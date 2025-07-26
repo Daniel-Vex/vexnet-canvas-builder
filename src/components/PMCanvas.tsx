@@ -67,7 +67,7 @@ export const PMCanvas = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-vexnet bg-cover bg-center bg-no-repeat">
+    <div className="min-h-screen bg-cover bg-center bg-no-repeat" style={{backgroundImage: 'url(/src/assets/background-pmcanvas.jpg)'}}>
       {/* Header */}
       <div className="bg-vexnet-background/80 backdrop-blur-sm border-b border-border/20 p-4 print:bg-vexnet-background">
         <div className="max-w-7xl mx-auto flex items-center justify-between">

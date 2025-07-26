@@ -42,7 +42,7 @@ export const PMCanvasCard = ({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={`Digite ${title.toLowerCase()}...`}
-          className="bg-vexnet-secondary/50 border-border/30 text-foreground placeholder:text-muted-foreground resize-none flex-1 min-h-[200px]"
+          className="bg-vexnet-secondary/50 border-border/30 text-foreground placeholder:text-muted-foreground resize-none flex-1 h-full"
           rows={rows}
         />
       </CardContent>
