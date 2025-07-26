@@ -44,7 +44,7 @@ All colors MUST be HSL.
     --vexnet-surface: 214 100% 20%;
     
     /* Gradients */
-    --gradient-bg: linear-gradient(135deg, hsl(210 100% 8%), hsl(206 100% 15%));
+    --gradient-bg: url('../assets/background-vex.jpg');
     --gradient-card: linear-gradient(135deg, hsl(214 100% 20%), hsl(214 100% 25%));
 
     --radius: 0.75rem;
