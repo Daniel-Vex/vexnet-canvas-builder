@@ -109,7 +109,7 @@ export const PMCanvas = () => {
       {/* Canvas Grid */}
       <div className="max-w-7xl mx-auto p-6">
         <div className="grid grid-cols-5 gap-4 auto-rows-fr">
-          {/* Row 1 - 5 quadros */}
+          {/* Linha 1 */}
           <PMCanvasCard
             title="Justificativa"
             number={1}
@@ -117,27 +117,7 @@ export const PMCanvas = () => {
             value={data.justificativa}
             onChange={(value) => updateField("justificativa", value)}
             className="col-span-1"
-            rows={6}
-          />
-          
-          <PMCanvasCard
-            title="Obj. SMART"
-            number={2}
-            icon={<Target className="w-4 h-4" />}
-            value={data.objSmart}
-            onChange={(value) => updateField("objSmart", value)}
-            className="col-span-1"
-            rows={6}
-          />
-          
-          <PMCanvasCard
-            title="Benefícios"
-            number={3}
-            icon={<TrendingUp className="w-4 h-4" />}
-            value={data.beneficios}
-            onChange={(value) => updateField("beneficios", value)}
-            className="col-span-1"
-            rows={6}
+            rows={4}
           />
           
           <PMCanvasCard
@@ -147,20 +127,9 @@ export const PMCanvas = () => {
             value={data.produto}
             onChange={(value) => updateField("produto", value)}
             className="col-span-1"
-            rows={6}
+            rows={4}
           />
           
-          <PMCanvasCard
-            title="Requisitos"
-            number={5}
-            icon={<ClipboardList className="w-4 h-4" />}
-            value={data.requisitos}
-            onChange={(value) => updateField("requisitos", value)}
-            className="col-span-1"
-            rows={6}
-          />
-
-          {/* Row 2 - 5 quadros */}
           <PMCanvasCard
             title="Stakeholders"
             number={6}
@@ -172,21 +141,52 @@ export const PMCanvas = () => {
           />
           
           <PMCanvasCard
-            title="Equipe"
-            number={7}
-            icon={<UserCheck className="w-4 h-4" />}
-            value={data.equipe}
-            onChange={(value) => updateField("equipe", value)}
-            className="col-span-1"
-            rows={4}
-          />
-          
-          <PMCanvasCard
             title="Premissas"
             number={8}
             icon={<Cloud className="w-4 h-4" />}
             value={data.premissas}
             onChange={(value) => updateField("premissas", value)}
+            className="col-span-1"
+            rows={4}
+          />
+          
+          <PMCanvasCard
+            title="Riscos"
+            number={11}
+            icon={<Shield className="w-4 h-4" />}
+            value={data.riscos}
+            onChange={(value) => updateField("riscos", value)}
+            className="col-span-1"
+            rows={4}
+          />
+
+          {/* Linha 2 */}
+          <PMCanvasCard
+            title="Obj. SMART"
+            number={2}
+            icon={<Target className="w-4 h-4" />}
+            value={data.objSmart}
+            onChange={(value) => updateField("objSmart", value)}
+            className="col-span-1"
+            rows={4}
+          />
+          
+          <PMCanvasCard
+            title="Requisitos"
+            number={5}
+            icon={<ClipboardList className="w-4 h-4" />}
+            value={data.requisitos}
+            onChange={(value) => updateField("requisitos", value)}
+            className="col-span-1 row-span-2"
+            rows={8}
+          />
+          
+          <PMCanvasCard
+            title="Equipe"
+            number={7}
+            icon={<UserCheck className="w-4 h-4" />}
+            value={data.equipe}
+            onChange={(value) => updateField("equipe", value)}
             className="col-span-1"
             rows={4}
           />
@@ -211,23 +211,25 @@ export const PMCanvas = () => {
             rows={4}
           />
 
-          {/* Row 3 - 3 quadros com larguras diferentes */}
+          {/* Linha 3 */}
+          <PMCanvasCard
+            title="Benefícios"
+            number={3}
+            icon={<TrendingUp className="w-4 h-4" />}
+            value={data.beneficios}
+            onChange={(value) => updateField("beneficios", value)}
+            className="col-span-1"
+            rows={4}
+          />
+          
+          {/* Requisitos continua aqui (row-span-2) */}
+          
           <PMCanvasCard
             title="Restrições"
             number={10}
             icon={<AlertTriangle className="w-4 h-4" />}
             value={data.restricoes}
             onChange={(value) => updateField("restricoes", value)}
-            className="col-span-2"
-            rows={4}
-          />
-          
-          <PMCanvasCard
-            title="Riscos"
-            number={11}
-            icon={<Shield className="w-4 h-4" />}
-            value={data.riscos}
-            onChange={(value) => updateField("riscos", value)}
             className="col-span-2"
             rows={4}
           />
