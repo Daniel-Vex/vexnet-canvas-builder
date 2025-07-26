@@ -26,7 +26,7 @@ export const PMCanvasCard = ({
       "bg-gradient-card border-border/20 shadow-lg hover:shadow-xl transition-all duration-300",
       className
     )}>
-      <CardContent className="p-4 h-full">
+      <CardContent className="p-4 h-full flex flex-col">
         <div className="flex items-center gap-3 mb-3">
           <div className="text-vexnet-accent">
             {icon}
@@ -42,7 +42,7 @@ export const PMCanvasCard = ({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={`Digite ${title.toLowerCase()}...`}
-          className={`bg-vexnet-secondary/50 border-border/30 text-foreground placeholder:text-muted-foreground resize-none ${title === "Requisitos" ? "flex-1 h-full" : "flex-1 min-h-[200px]"}`}
+          className={`bg-vexnet-secondary/50 border-border/30 text-foreground placeholder:text-muted-foreground resize-none ${title === "Requisitos" ? "flex-1" : "flex-1"}`}
           rows={rows}
         />
       </CardContent>
