@@ -20,8 +20,7 @@ import {
   DollarSign,
   Download 
 } from "lucide-react";
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import { gerarPDFEditavel } from "@/lib/pdf-generator";
 
 interface CanvasData {
   gp: string;
@@ -67,45 +66,12 @@ export const PMCanvas = () => {
   };
 
   const gerarPDF = async () => {
-    console.log('Função gerarPDF iniciada');
-    const element = document.getElementById('canvas-content');
-    if (!element) {
-      console.error('Elemento canvas-content não encontrado!');
-      return;
-    }
-    console.log('Elemento encontrado:', element);
-
+    console.log('Gerando PDF editável...');
     try {
-      console.log('Iniciando html2canvas...');
-      const canvas = await html2canvas(element, {
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: null
-      });
-      console.log('html2canvas concluído:', canvas);
-
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF({
-        orientation: 'landscape',
-        unit: 'mm',
-        format: 'a0'
-      });
-
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-      
-      const imgX = (pdfWidth - imgWidth * ratio) / 2;
-      const imgY = (pdfHeight - imgHeight * ratio) / 2;
-
-      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
-      pdf.save('TAP_Vexnet.pdf');
+      await gerarPDFEditavel(data);
+      console.log('PDF editável gerado com sucesso!');
     } catch (error) {
-      console.error('Erro ao gerar PDF:', error);
+      console.error('Erro ao gerar PDF editável:', error);
     }
   };
 
@@ -143,7 +109,7 @@ export const PMCanvas = () => {
               className="bg-vexnet-accent hover:bg-vexnet-accent/80 text-vexnet-background print:hidden h-10 px-4 whitespace-nowrap"
             >
               <Download className="w-4 h-4 mr-2" />
-              Baixar em PDF
+              Baixar PDF Editável
             </Button>
           </div>
         </div>
