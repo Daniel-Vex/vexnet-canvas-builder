@@ -74,7 +74,7 @@ export const PMCanvas = () => {
               className="bg-vexnet-accent hover:bg-vexnet-accent/80 text-vexnet-background print:hidden h-10 px-4 whitespace-nowrap"
             >
               <Download className="w-4 h-4 mr-2" />
-              Baixar PDF Editável
+              Baixar PDF
             </Button>
           </div>
         </div>
