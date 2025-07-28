@@ -5,6 +5,9 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  // ADICIONE ESTA LINHA:
+  base: "/vexnet-canvas-builder/", // <--- MUITO IMPORTANTE!
+
   server: {
     host: "::",
     port: 8080,
