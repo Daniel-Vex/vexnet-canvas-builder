@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import logoBranco from '@/assets/vexnet-logo-branco.png';
-import backgroundVex from '@/assets/background-vex.jpg'; // Importa a imagem de fundo
+import backgroundVex from '@/assets/background-vex.jpg';
 
 // Define a interface para os dados do canvas
 interface CanvasData {
@@ -39,7 +39,7 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
   const doc = new jsPDF({
     orientation: 'landscape',
     unit: 'mm',
-    format: 'a3',
+    format: 'a0',
   });
 
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -63,29 +63,23 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
 
   // --- LAYOUT DO PDF ---
 
-  // CORREÇÃO: Adiciona a imagem de fundo primeiro
   doc.addImage(backgroundDataUri, 'JPEG', 0, 0, pageWidth, pageHeight);
 
   // Cabeçalho
   const headerHeight = 40;
-  // A barra de cor sólida no cabeçalho foi removida para que a imagem de fundo apareça
-  // doc.setFillColor(colors.headerBg); 
-  // doc.rect(0, 0, pageWidth, headerHeight, 'F');
-
-  // CORREÇÃO: Dimensões da logo ajustadas para evitar achatamento
+  
   const logoHeight = 18; 
   const logoWidth = 80; 
   doc.addImage(logoDataUri, 'PNG', 20, (headerHeight - logoHeight) / 2, logoWidth, logoHeight);
 
-  // CORREÇÃO: Posição dos campos GP e Projeto ajustada
   const headerInputY = (headerHeight / 2) - 8;
   const headerInputWidth = 80;
   const headerInputHeight = 16;
-  const gpFieldX = logoWidth + 60; // Posição relativa ao logo
-  const projetoFieldX = gpFieldX + headerInputWidth + 30;
+  const gpFieldX = logoWidth + 40;
+  const projetoFieldX = gpFieldX + headerInputWidth + 20;
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(30); // CORREÇÃO: Tamanho da fonte aumentado
+  doc.setFontSize(18);
   doc.setTextColor(colors.muted);
   doc.text("GP:", gpFieldX, headerInputY + 10);
   doc.setFillColor(colors.inputBg);
@@ -94,22 +88,24 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
   const gpField = new (jsPDF as any).AcroForm.TextField();
   gpField.value = data.gp || '';
   gpField.fieldName = "gp";
-  gpField.Rect = [gpFieldX + 30, headerInputY, headerInputWidth, headerInputHeight];
-  (gpField as any).fontName = 'helvetica';
-  (gpField as any).fontSize = 25; // CORREÇÃO: Tamanho da fonte do campo
+  gpField.Rect = [gpFieldX + 20, headerInputY, headerInputWidth, headerInputHeight];
+  // CORREÇÃO: Define a aparência padrão para forçar o estilo durante a edição
+  (gpField as any).DA = '/Helv 16 Tf 1 1 1 rg'; // Fonte Helvetica, Tamanho 14, Cor Branca
+  (gpField as any).fontSize = 16;
   (gpField as any).color = colors.white;
   doc.addField(gpField);
 
-  doc.text("Projeto:", projetoFieldX, headerInputY + 20);
+  doc.text("Projeto:", projetoFieldX, headerInputY + 10);
   doc.setFillColor(colors.inputBg);
-  doc.roundedRect(projetoFieldX + 45, headerInputY, headerInputWidth, headerInputHeight, 3, 3, 'F');
+  doc.roundedRect(projetoFieldX + 35, headerInputY, headerInputWidth, headerInputHeight, 3, 3, 'F');
   
   const projetoField = new (jsPDF as any).AcroForm.TextField();
   projetoField.value = data.projeto || '';
   projetoField.fieldName = "projeto";
-  projetoField.Rect = [projetoFieldX + 45, headerInputY, headerInputWidth, headerInputHeight];
-  (projetoField as any).fontName = 'helvetica';
-  (projetoField as any).fontSize = 25; // CORREÇÃO: Tamanho da fonte do campo
+  projetoField.Rect = [projetoFieldX + 35, headerInputY, headerInputWidth, headerInputHeight];
+  // CORREÇÃO: Define a aparência padrão
+  (projetoField as any).DA = '/Helv 14 Tf 1 1 1 rg';
+  (projetoField as any).fontSize = 16;
   (projetoField as any).color = colors.white;
   doc.addField(projetoField);
   
@@ -152,7 +148,7 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
 
       const cardHeaderY = y + 15;
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(30); // CORREÇÃO: Tamanho da fonte do título aumentado
+      doc.setFontSize(22);
       doc.setTextColor(colors.cardTitle);
       doc.text(cardDef.title, x + 10, cardHeaderY);
 
@@ -163,7 +159,7 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
       doc.circle(circleX, circleY, circleRadius, 'F');
       
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(18); // CORREÇÃO: Tamanho da fonte do número aumentado
+      doc.setFontSize(14);
       doc.setTextColor(colors.accent);
       doc.text(String(cardDef.n), circleX, circleY + 4, { align: 'center' });
       
@@ -174,8 +170,9 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
       textField.fieldName = cardDef.key;
       textField.multiline = true;
       textField.Rect = [x + 8, textAreaY, w - 16, textAreaHeight];
-      (textField as any).fontName = 'helvetica';
-      (textField as any).fontSize = 25; // CORREÇÃO: Tamanho da fonte do campo
+      // CORREÇÃO: Define a aparência padrão para forçar o estilo durante a edição
+      (textField as any).DA = '/Helv 16 Tf 1 1 1 rg'; // Fonte Helvetica, Tamanho 14, Cor Branca
+      (textField as any).fontSize = 16;
       (textField as any).color = colors.white;
       doc.addField(textField);
   });
