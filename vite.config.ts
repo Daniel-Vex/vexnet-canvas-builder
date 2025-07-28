@@ -6,7 +6,7 @@ import { componentTagger } from "lovable-tagger";
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   // ADICIONE ESTA LINHA:
-  base: "/vexnet-canvas-builder/", // <--- MUITO IMPORTANTE!
+  base: "/vexnet-canvas-builder/", // Substitua pelo nome do seu repositório
 
   server: {
     host: "::",
