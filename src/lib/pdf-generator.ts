@@ -1,3 +1,5 @@
+// Caminho: src/lib/pdf-generator.ts
+// Conteúdo final e corrigido.
 import jsPDF from 'jspdf';
 import logoBranco from '@/assets/vexnet-logo-branco.png';
 
@@ -46,31 +48,19 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
   
   const logoDataUri = await toDataURL(logoBranco);
 
-  // Paleta de Cores Vexnet Atualizada
+  // Paleta de Cores Vexnet
   const colors = {
     headerBg: '#1E293B',
     cardBg: '#2C3E50',
     cardBorder: '#475569',
     cardTitle: '#FFFFFF',
     accent: '#09BBB5',
-    accentLight: '#A0E5E3', // CORREÇÃO: Substituído RGBA por uma cor sólida
+    accentLight: '#A0E5E3',
     primary: '#005BAA',
-    secondary: '#70A6FF',
     white: '#FFFFFF',
     muted: '#94A3B8',
     inputBg: '#374151'
   };
-  
-  // Adiciona a fonte Montserrat (com fallback para helvetica)
-  // Nota: Para que a fonte apareça, o navegador do usuário precisa tê-la instalada.
-  try {
-      doc.addFont('Montserrat-Regular.ttf', 'Montserrat', 'normal');
-      doc.addFont('Montserrat-Bold.ttf', 'Montserrat', 'bold');
-      doc.setFont('Montserrat', 'normal');
-  } catch(e) {
-      console.warn("Fonte Montserrat não encontrada, usando Helvetica.");
-      doc.setFont('helvetica', 'normal');
-  }
 
   // --- LAYOUT DO PDF ---
 
@@ -87,7 +77,8 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
   const headerInputWidth = 80;
   const headerInputHeight = 16;
   
-  doc.setFontSize(14); // CORREÇÃO: Tamanho da fonte aumentado
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(14);
   doc.setTextColor(colors.muted);
   doc.text("GP:", pageWidth - 220, headerInputY + 10);
   doc.setFillColor(colors.inputBg);
@@ -97,7 +88,8 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
   gpField.value = data.gp || '';
   gpField.fieldName = "gp";
   gpField.Rect = [pageWidth - 200, headerInputY, headerInputWidth, headerInputHeight];
-  gpField.color = colors.white; // CORREÇÃO: Cor do texto do campo
+  (gpField as any).fontName = 'helvetica';
+  (gpField as any).color = colors.white;
   doc.addField(gpField);
 
   doc.text("Projeto:", pageWidth - 110, headerInputY + 10);
@@ -108,7 +100,8 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
   projetoField.value = data.projeto || '';
   projetoField.fieldName = "projeto";
   projetoField.Rect = [pageWidth - 80, headerInputY, headerInputWidth, headerInputHeight];
-  projetoField.color = colors.white; // CORREÇÃO: Cor do texto do campo
+  (projetoField as any).fontName = 'helvetica';
+  (projetoField as any).color = colors.white;
   doc.addField(projetoField);
   
   // Grade de Cartões
@@ -149,9 +142,9 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
       doc.roundedRect(x, y, w, h, 6, 6, 'FD');
 
       const cardHeaderY = y + 12;
-      doc.setFont('Montserrat', 'bold');
-      doc.setFontSize(14); // CORREÇÃO: Tamanho da fonte aumentado
-      doc.setTextColor(colors.cardTitle); // CORREÇÃO: Cor da fonte definida como branca
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(14);
+      doc.setTextColor(colors.cardTitle);
       doc.text(cardDef.title, x + 10, cardHeaderY);
 
       const circleRadius = 5;
@@ -160,7 +153,7 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
       doc.setFillColor(colors.accentLight);
       doc.circle(circleX, circleY, circleRadius, 'F');
       
-      doc.setFont('Montserrat', 'bold');
+      doc.setFont('helvetica', 'bold');
       doc.setFontSize(10);
       doc.setTextColor(colors.accent);
       doc.text(String(cardDef.n), circleX, circleY + 3.5, { align: 'center' });
@@ -172,7 +165,8 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
       textField.fieldName = cardDef.key;
       textField.multiline = true;
       textField.Rect = [x + 5, textAreaY, w - 10, textAreaHeight];
-      textField.color = colors.white; // CORREÇÃO: Cor do texto do campo
+      (textField as any).fontName = 'helvetica';
+      (textField as any).color = colors.white;
       doc.addField(textField);
   });
   
