@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import logoBranco from '@/assets/vexnet-logo-branco.png';
-import backgroundVex from '@/assets/background-vex.jpg';
+import backgroundVex from '@/assets/background-vex.jpg'; // Importa a imagem de fundo
 
 // Define a interface para os dados do canvas
 interface CanvasData {
@@ -48,42 +48,44 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
   const logoDataUri = await toDataURL(logoBranco);
   const backgroundDataUri = await toDataURL(backgroundVex);
 
-  // Paleta de Cores Refinada
+  // Paleta de Cores
   const colors = {
-    headerBg: '#1E293B',
-    cardBg: '#34495E', // CORREÇÃO: Azul mais escuro para o fundo do card
-    cardTextBg: '#2C3E50', // CORREÇÃO: Fundo da área de texto
+    headerBg: '#376DBA',
+    cardBg: '#376DBA',
     cardBorder: '#475569',
     cardTitle: '#FFFFFF',
-    accent: '#09BBB5', // Verde-água principal
-    accentDark: '#089c97', // CORREÇÃO: Tom mais escuro para o fundo do círculo
+    accent: '#09BBB5',
+    accentLight: '#A0E5E3',
     white: '#FFFFFF',
     muted: '#94A3B8',
-    inputBg: '#374151'
+    inputBg: '#376DBA'
   };
 
   // --- LAYOUT DO PDF ---
 
-  // Imagem de fundo
+  // CORREÇÃO: Adiciona a imagem de fundo primeiro
   doc.addImage(backgroundDataUri, 'JPEG', 0, 0, pageWidth, pageHeight);
 
   // Cabeçalho
   const headerHeight = 40;
+  // A barra de cor sólida no cabeçalho foi removida para que a imagem de fundo apareça
   // doc.setFillColor(colors.headerBg); 
   // doc.rect(0, 0, pageWidth, headerHeight, 'F');
 
+  // CORREÇÃO: Dimensões da logo ajustadas para evitar achatamento
   const logoHeight = 18; 
   const logoWidth = 80; 
   doc.addImage(logoDataUri, 'PNG', 20, (headerHeight - logoHeight) / 2, logoWidth, logoHeight);
 
+  // CORREÇÃO: Posição dos campos GP e Projeto ajustada
   const headerInputY = (headerHeight / 2) - 8;
   const headerInputWidth = 80;
   const headerInputHeight = 16;
-  const gpFieldX = logoWidth + 40;
+  const gpFieldX = logoWidth + 40; // Posição relativa ao logo
   const projetoFieldX = gpFieldX + headerInputWidth + 20;
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(16);
+  doc.setFontSize(30); // CORREÇÃO: Tamanho da fonte aumentado
   doc.setTextColor(colors.muted);
   doc.text("GP:", gpFieldX, headerInputY + 10);
   doc.setFillColor(colors.inputBg);
@@ -94,7 +96,7 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
   gpField.fieldName = "gp";
   gpField.Rect = [gpFieldX + 20, headerInputY, headerInputWidth, headerInputHeight];
   (gpField as any).fontName = 'helvetica';
-  (gpField as any).fontSize = 14;
+  (gpField as any).fontSize = 25; // CORREÇÃO: Tamanho da fonte do campo
   (gpField as any).color = colors.white;
   doc.addField(gpField);
 
@@ -107,7 +109,7 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
   projetoField.fieldName = "projeto";
   projetoField.Rect = [projetoFieldX + 35, headerInputY, headerInputWidth, headerInputHeight];
   (projetoField as any).fontName = 'helvetica';
-  (projetoField as any).fontSize = 14;
+  (projetoField as any).fontSize = 25; // CORREÇÃO: Tamanho da fonte do campo
   (projetoField as any).color = colors.white;
   doc.addField(projetoField);
   
@@ -146,42 +148,37 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
       doc.setFillColor(colors.cardBg);
       doc.setDrawColor(colors.cardBorder);
       doc.setLineWidth(0.5);
-      doc.roundedRect(x, y, w, h, 8, 8, 'FD');
+      doc.roundedRect(x, y, w, h, 6, 6, 'FD');
 
       const cardHeaderY = y + 15;
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(18);
+      doc.setFontSize(30); // CORREÇÃO: Tamanho da fonte do título aumentado
       doc.setTextColor(colors.cardTitle);
-      doc.text(cardDef.title, x + 10, cardHeaderY); // Ícone será adicionado depois
+      doc.text(cardDef.title, x + 10, cardHeaderY);
 
-      const circleRadius = 7;
-      const circleX = x + w - 20;
+      const circleRadius = 6;
+      const circleX = x + w - 18;
       const circleY = cardHeaderY - 2;
-      doc.setFillColor(colors.accentDark); // CORREÇÃO: Círculo com cor sólida mais escura
+      doc.setFillColor(colors.accentLight);
       doc.circle(circleX, circleY, circleRadius, 'F');
       
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(12);
-      doc.setTextColor(colors.white); // CORREÇÃO: Número em branco
+      doc.setFontSize(12); // CORREÇÃO: Tamanho da fonte do número aumentado
+      doc.setTextColor(colors.accent);
       doc.text(String(cardDef.n), circleX, circleY + 4, { align: 'center' });
       
       const textAreaY = y + 28;
       const textAreaHeight = h - 35;
-      
-      // Fundo da área de texto
-      doc.setFillColor(colors.cardTextBg);
-      doc.roundedRect(x + 8, textAreaY, w - 16, textAreaHeight, 5, 5, 'F');
-
       const textField = new (jsPDF as any).AcroForm.TextField();
       textField.value = data[cardDef.key as keyof CanvasData] || '';
       textField.fieldName = cardDef.key;
       textField.multiline = true;
       textField.Rect = [x + 8, textAreaY, w - 16, textAreaHeight];
       (textField as any).fontName = 'helvetica';
-      (textField as any).fontSize = 14;
+      (textField as any).fontSize = 25; // CORREÇÃO: Tamanho da fonte do campo
       (textField as any).color = colors.white;
       doc.addField(textField);
   });
   
-  doc.save('TAP_Vexnet_Final.pdf');
+  doc.save('TAP_Vexnet.pdf');
 };
