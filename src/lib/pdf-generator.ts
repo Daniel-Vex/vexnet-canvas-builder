@@ -46,19 +46,31 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
   
   const logoDataUri = await toDataURL(logoBranco);
 
+  // Paleta de Cores Vexnet Atualizada
   const colors = {
-    headerBg: '#1E293B',
-    cardBg: '#1E293B',
+    headerBg: '#1E293B',        // Um azul bem escuro para o cabeçalho
+    cardBg: '#2C3E50',          // Azul um pouco mais claro para os cards
     cardBorder: '#475569',
     cardTitle: '#FFFFFF',
-    cardNumberCircleBg: '#0D9488',
-    cardNumberText: '#09BBB5',
+    accent: '#09BBB5',          // Verde-água para os detalhes
+    accentLight: 'rgba(9, 187, 181, 0.2)', // Usado no fundo do círculo do número
+    primary: '#005BAA',         // Azul primário Vexnet
+    secondary: '#70A6FF',       // Azul secundário Vexnet
     white: '#FFFFFF',
     muted: '#94A3B8',
-    inputBg: '#64748B'
+    inputBg: '#374151'           // Cinza-azulado para o fundo do input
   };
+  
+  // Tenta usar a fonte Montserrat, com Helvetica como fallback
+  try {
+      doc.setFont('Montserrat', 'normal');
+  } catch(e) {
+      console.warn("Fonte Montserrat não encontrada, usando Helvetica.");
+      doc.setFont('helvetica', 'normal');
+  }
 
-  doc.setFont('helvetica', 'normal');
+
+  // --- LAYOUT DO PDF ---
 
   // Cabeçalho
   const headerHeight = 40;
@@ -66,15 +78,8 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
   doc.rect(0, 0, pageWidth, headerHeight, 'F');
 
   const logoHeight = 20;
-  const logoWidth = (logoHeight * 218) / 46;
-  doc.addImage(
-    logoDataUri,
-    'PNG',
-    15,
-    (headerHeight - logoHeight) / 2,
-    logoWidth,
-    logoHeight
-  );
+  const logoWidth = (logoHeight * 218) / 46; // Mantém a proporção da imagem
+  doc.addImage(logoDataUri, 'PNG', 15, (headerHeight - logoHeight) / 2, logoWidth, logoHeight);
 
   const headerInputY = (headerHeight / 2) - 8;
   const headerInputWidth = 80;
@@ -86,7 +91,6 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
   doc.setFillColor(colors.inputBg);
   doc.roundedRect(pageWidth - 200, headerInputY, headerInputWidth, headerInputHeight, 3, 3, 'F');
   
-  // CORREÇÃO: Adicionado "(jsPDF as any)" para resolver o erro de tipo
   const gpField = new (jsPDF as any).AcroForm.TextField();
   gpField.value = data.gp || '';
   gpField.fieldName = "gp";
@@ -141,18 +145,18 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
       doc.roundedRect(x, y, w, h, 6, 6, 'FD');
 
       const cardHeaderY = y + 12;
+      doc.setFont('Montserrat', 'bold');
       doc.setFontSize(12);
-      doc.setFont('helvetica', 'bold');
       doc.setTextColor(colors.cardTitle);
       doc.text(cardDef.title, x + 10, cardHeaderY);
 
       const circleRadius = 5;
       const circleX = x + w - 15;
       const circleY = cardHeaderY - 2;
-      doc.setFillColor(colors.cardNumberCircleBg);
+      doc.setFillColor(colors.accentLight);
       doc.circle(circleX, circleY, circleRadius, 'F');
       doc.setFontSize(10);
-      doc.setTextColor(colors.cardNumberText);
+      doc.setTextColor(colors.accent);
       doc.text(String(cardDef.n), circleX, circleY + 3.5, { align: 'center' });
       
       const textAreaY = y + 25;
@@ -165,5 +169,5 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
       doc.addField(textField);
   });
   
-  doc.save('TAP_Vexnet_Corrigido.pdf');
+  doc.save('TAP_Vexnet.pdf');
 };
