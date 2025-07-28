@@ -20,7 +20,7 @@ interface CanvasData {
   custos: string;
 }
 
-// Função para converter imagem para Data URI
+// Função para converter imagem para Data URI para evitar problemas de CORS
 const toDataURL = (url: string): Promise<string> =>
   fetch(url)
     .then(response => response.blob())
@@ -48,27 +48,29 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
 
   // Paleta de Cores Vexnet Atualizada
   const colors = {
-    headerBg: '#1E293B',        // Um azul bem escuro para o cabeçalho
-    cardBg: '#2C3E50',          // Azul um pouco mais claro para os cards
+    headerBg: '#1E293B',
+    cardBg: '#2C3E50',
     cardBorder: '#475569',
     cardTitle: '#FFFFFF',
-    accent: '#09BBB5',          // Verde-água para os detalhes
-    accentLight: 'rgba(9, 187, 181, 0.2)', // Usado no fundo do círculo do número
-    primary: '#005BAA',         // Azul primário Vexnet
-    secondary: '#70A6FF',       // Azul secundário Vexnet
+    accent: '#09BBB5',
+    accentLight: '#A0E5E3', // CORREÇÃO: Substituído RGBA por uma cor sólida
+    primary: '#005BAA',
+    secondary: '#70A6FF',
     white: '#FFFFFF',
     muted: '#94A3B8',
-    inputBg: '#374151'           // Cinza-azulado para o fundo do input
+    inputBg: '#374151'
   };
   
-  // Tenta usar a fonte Montserrat, com Helvetica como fallback
+  // Adiciona a fonte Montserrat (com fallback para helvetica)
+  // Nota: Para que a fonte apareça, o navegador do usuário precisa tê-la instalada.
   try {
+      doc.addFont('Montserrat-Regular.ttf', 'Montserrat', 'normal');
+      doc.addFont('Montserrat-Bold.ttf', 'Montserrat', 'bold');
       doc.setFont('Montserrat', 'normal');
   } catch(e) {
       console.warn("Fonte Montserrat não encontrada, usando Helvetica.");
       doc.setFont('helvetica', 'normal');
   }
-
 
   // --- LAYOUT DO PDF ---
 
@@ -78,14 +80,14 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
   doc.rect(0, 0, pageWidth, headerHeight, 'F');
 
   const logoHeight = 20;
-  const logoWidth = (logoHeight * 218) / 46; // Mantém a proporção da imagem
+  const logoWidth = (logoHeight * 218) / 46;
   doc.addImage(logoDataUri, 'PNG', 15, (headerHeight - logoHeight) / 2, logoWidth, logoHeight);
 
   const headerInputY = (headerHeight / 2) - 8;
   const headerInputWidth = 80;
   const headerInputHeight = 16;
   
-  doc.setFontSize(12);
+  doc.setFontSize(14); // CORREÇÃO: Tamanho da fonte aumentado
   doc.setTextColor(colors.muted);
   doc.text("GP:", pageWidth - 220, headerInputY + 10);
   doc.setFillColor(colors.inputBg);
@@ -95,6 +97,7 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
   gpField.value = data.gp || '';
   gpField.fieldName = "gp";
   gpField.Rect = [pageWidth - 200, headerInputY, headerInputWidth, headerInputHeight];
+  gpField.color = colors.white; // CORREÇÃO: Cor do texto do campo
   doc.addField(gpField);
 
   doc.text("Projeto:", pageWidth - 110, headerInputY + 10);
@@ -105,6 +108,7 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
   projetoField.value = data.projeto || '';
   projetoField.fieldName = "projeto";
   projetoField.Rect = [pageWidth - 80, headerInputY, headerInputWidth, headerInputHeight];
+  projetoField.color = colors.white; // CORREÇÃO: Cor do texto do campo
   doc.addField(projetoField);
   
   // Grade de Cartões
@@ -146,8 +150,8 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
 
       const cardHeaderY = y + 12;
       doc.setFont('Montserrat', 'bold');
-      doc.setFontSize(12);
-      doc.setTextColor(colors.cardTitle);
+      doc.setFontSize(14); // CORREÇÃO: Tamanho da fonte aumentado
+      doc.setTextColor(colors.cardTitle); // CORREÇÃO: Cor da fonte definida como branca
       doc.text(cardDef.title, x + 10, cardHeaderY);
 
       const circleRadius = 5;
@@ -155,6 +159,8 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
       const circleY = cardHeaderY - 2;
       doc.setFillColor(colors.accentLight);
       doc.circle(circleX, circleY, circleRadius, 'F');
+      
+      doc.setFont('Montserrat', 'bold');
       doc.setFontSize(10);
       doc.setTextColor(colors.accent);
       doc.text(String(cardDef.n), circleX, circleY + 3.5, { align: 'center' });
@@ -166,6 +172,7 @@ export const gerarPDFEditavel = async (data: CanvasData): Promise<void> => {
       textField.fieldName = cardDef.key;
       textField.multiline = true;
       textField.Rect = [x + 5, textAreaY, w - 10, textAreaHeight];
+      textField.color = colors.white; // CORREÇÃO: Cor do texto do campo
       doc.addField(textField);
   });
   
