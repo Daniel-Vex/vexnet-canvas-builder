@@ -18,8 +18,10 @@ import {
   Shield, 
   Clock, 
   DollarSign,
-  Printer 
+  Download 
 } from "lucide-react";
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 interface CanvasData {
   gp: string;
@@ -62,19 +64,51 @@ export const PMCanvas = () => {
     setData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handlePrint = () => {
-    window.print();
+  const gerarPDF = async () => {
+    const element = document.getElementById('canvas-content');
+    if (!element) return;
+
+    try {
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'mm',
+        format: 'a0'
+      });
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgY = (pdfHeight - imgHeight * ratio) / 2;
+
+      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+      pdf.save('TAP_Vexnet.pdf');
+    } catch (error) {
+      console.error('Erro ao gerar PDF:', error);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-cover bg-center bg-no-repeat" style={{backgroundImage: 'url(/src/assets/background-pmcanvas.jpg)'}}>
+    <div className="min-h-screen bg-cover bg-center bg-no-repeat bg-fixed" style={{backgroundImage: "url('https://drive.google.com/uc?export=view&id=1kdIk1CXfq6Anep-GrDgD0zTUfMHqKC6N')"}}>
       {/* Header */}
       <div className="bg-vexnet-background/80 backdrop-blur-sm border-b border-border/20 p-4 print:bg-vexnet-background">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-4">
           <VexnetLogo />
-          <div className="flex flex-col lg:flex-row lg:items-end gap-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 text-sm">
-              <div>
+          <div className="flex flex-row items-end gap-4 w-full lg:w-auto">
+            <div className="flex flex-row gap-4 text-sm flex-1 lg:flex-initial">
+              <div className="flex-1 lg:w-48">
                 <Label htmlFor="gp" className="text-muted-foreground">GP:</Label>
                 <Input
                   id="gp"
@@ -84,7 +118,7 @@ export const PMCanvas = () => {
                   placeholder="Digite o GP"
                 />
               </div>
-              <div>
+              <div className="flex-1 lg:w-48">
                 <Label htmlFor="projeto" className="text-muted-foreground">Projeto:</Label>
                 <Input
                   id="projeto"
@@ -96,18 +130,18 @@ export const PMCanvas = () => {
               </div>
             </div>
             <Button 
-              onClick={handlePrint}
-              className="bg-vexnet-accent hover:bg-vexnet-accent/80 text-vexnet-background print:hidden self-start lg:self-center"
+              onClick={gerarPDF}
+              className="bg-vexnet-accent hover:bg-vexnet-accent/80 text-vexnet-background print:hidden h-10 px-4 whitespace-nowrap"
             >
-              <Printer className="w-4 h-4 mr-2" />
-              Imprimir
+              <Download className="w-4 h-4 mr-2" />
+              Baixar em PDF
             </Button>
           </div>
         </div>
       </div>
 
       {/* Canvas Grid */}
-      <div className="max-w-7xl mx-auto p-4 lg:p-6">
+      <div id="canvas-content" className="max-w-7xl mx-auto p-4 lg:p-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 auto-rows-fr">
           {/* Linha 1 */}
           <PMCanvasCard
