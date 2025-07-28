@@ -42,6 +42,8 @@ interface CanvasData {
 }
 
 export const PMCanvas = () => {
+  console.log('PMCanvas component iniciando...');
+  
   const [data, setData] = useState<CanvasData>({
     gp: "",
     projeto: "",
@@ -65,16 +67,23 @@ export const PMCanvas = () => {
   };
 
   const gerarPDF = async () => {
+    console.log('Função gerarPDF iniciada');
     const element = document.getElementById('canvas-content');
-    if (!element) return;
+    if (!element) {
+      console.error('Elemento canvas-content não encontrado!');
+      return;
+    }
+    console.log('Elemento encontrado:', element);
 
     try {
+      console.log('Iniciando html2canvas...');
       const canvas = await html2canvas(element, {
         scale: 2,
         useCORS: true,
         allowTaint: true,
         backgroundColor: null
       });
+      console.log('html2canvas concluído:', canvas);
 
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF({
